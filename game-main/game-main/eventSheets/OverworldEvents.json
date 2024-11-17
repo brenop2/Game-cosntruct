@@ -1,0 +1,825 @@
+{
+	"name": "OverworldEvents",
+	"events": [
+		{
+			"eventType": "comment",
+			"text": "Gameplay variables"
+		},
+		{
+			"eventType": "variable",
+			"name": "playerHP",
+			"type": "number",
+			"initialValue": "150",
+			"comment": "Player hitpoints",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 953399091652543
+		},
+		{
+			"eventType": "variable",
+			"name": "enemyCount",
+			"type": "number",
+			"initialValue": "19",
+			"comment": "Player hitpoints",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 151911982256200
+		},
+		{
+			"eventType": "variable",
+			"name": "playerX",
+			"type": "number",
+			"initialValue": "152",
+			"comment": "Player X position",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 595062545529855
+		},
+		{
+			"eventType": "variable",
+			"name": "playerY",
+			"type": "number",
+			"initialValue": "136",
+			"comment": "Player Y position",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 426809516021403
+		},
+		{
+			"eventType": "comment",
+			"text": "Constants"
+		},
+		{
+			"eventType": "variable",
+			"name": "TILE_SIZE",
+			"type": "number",
+			"initialValue": "16",
+			"comment": "How big is the side of the tile square",
+			"isStatic": false,
+			"isConstant": true,
+			"sid": 337159449396493
+		},
+		{
+			"eventType": "variable",
+			"name": "PLAYER_SPEED",
+			"type": "number",
+			"initialValue": "0.2",
+			"comment": "How long it takes for the player to move from one tile to another (in seconds)",
+			"isStatic": false,
+			"isConstant": true,
+			"sid": 133655811461411
+		},
+		{
+			"eventType": "variable",
+			"name": "PLAYER_STARTING_X",
+			"type": "number",
+			"initialValue": "152",
+			"comment": "Player starting X position",
+			"isStatic": false,
+			"isConstant": true,
+			"sid": 751171644000630
+		},
+		{
+			"eventType": "variable",
+			"name": "PLAYER_STARTING_Y",
+			"type": "number",
+			"initialValue": "136",
+			"comment": "Player starting Y position",
+			"isStatic": false,
+			"isConstant": true,
+			"sid": 105800496292488
+		},
+		{
+			"eventType": "variable",
+			"name": "PLAYER_STARTING_HP",
+			"type": "number",
+			"initialValue": "150",
+			"comment": "Player starting HP",
+			"isStatic": false,
+			"isConstant": true,
+			"sid": 790313479969363
+		},
+		{
+			"eventType": "comment",
+			"text": "Setup"
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 301047182033121
+				}
+			],
+			"actions": [
+				{
+					"id": "set-position",
+					"objectClass": "Player",
+					"sid": 944829146883406,
+					"parameters": {
+						"x": "playerX",
+						"y": "playerY"
+					}
+				},
+				{
+					"id": "play",
+					"objectClass": "BackgroundSong",
+					"sid": 940011914761989,
+					"parameters": {
+						"audio-file": "Medieval Fantasy Music – Medieval Market ｜ Folk, Traditional, Instrumental ｜ Fantasy Music World #2 [bF-ayUbGtu4]",
+						"loop": "looping",
+						"volume": "-10",
+						"stereo-pan": "0",
+						"tag-optional": "\"\""
+					}
+				}
+			],
+			"sid": 908012865657522,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [],
+					"actions": [
+						{
+							"id": "set-enabled",
+							"objectClass": "Player",
+							"sid": 551655016265634,
+							"behaviorType": "Tween",
+							"parameters": {
+								"mode": "enabled"
+							}
+						}
+					],
+					"sid": 583430123675389
+				}
+			]
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "player",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "can-move-direction",
+							"objectClass": "Player",
+							"sid": 110983119224262,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "right",
+								"distance": "1"
+							}
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 280761519239727,
+							"parameters": {
+								"key": 39
+							}
+						},
+						{
+							"id": "is-playing",
+							"objectClass": "Player",
+							"sid": 461897059951911,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\""
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "tween-one-property",
+							"objectClass": "Player",
+							"sid": 796376930535936,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\"",
+								"property": "offsetX",
+								"end-value": "Self.X + TILE_SIZE",
+								"time": "PLAYER_SPEED",
+								"ease": "noease",
+								"destroy-on-complete": "no",
+								"loop": "no",
+								"ping-pong": "no",
+								"repeat-count": "1"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 967610858943181,
+							"parameters": {
+								"animation": "\"Right\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 553474486460897
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "can-move-direction",
+							"objectClass": "Player",
+							"sid": 380024371820752,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "left",
+								"distance": "1"
+							}
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 787668720396872,
+							"parameters": {
+								"key": 37
+							}
+						},
+						{
+							"id": "is-playing",
+							"objectClass": "Player",
+							"sid": 765668086205504,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\""
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "tween-one-property",
+							"objectClass": "Player",
+							"sid": 636723903621412,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\"",
+								"property": "offsetX",
+								"end-value": "Self.X - TILE_SIZE",
+								"time": "PLAYER_SPEED",
+								"ease": "noease",
+								"destroy-on-complete": "no",
+								"loop": "no",
+								"ping-pong": "no",
+								"repeat-count": "1"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 793881507647594,
+							"parameters": {
+								"animation": "\"Left\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 859445068650437
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "can-move-direction",
+							"objectClass": "Player",
+							"sid": 826671745439423,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "up",
+								"distance": "1"
+							}
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 449075919965695,
+							"parameters": {
+								"key": 38
+							}
+						},
+						{
+							"id": "is-playing",
+							"objectClass": "Player",
+							"sid": 459974178088207,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\""
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "tween-one-property",
+							"objectClass": "Player",
+							"sid": 538330788542947,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\"",
+								"property": "offsetY",
+								"end-value": "Self.Y - TILE_SIZE",
+								"time": "PLAYER_SPEED",
+								"ease": "noease",
+								"destroy-on-complete": "no",
+								"loop": "no",
+								"ping-pong": "no",
+								"repeat-count": "1"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 364467192906728,
+							"parameters": {
+								"animation": "\"Up\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 549841222114668
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "can-move-direction",
+							"objectClass": "Player",
+							"sid": 348363474803179,
+							"behaviorType": "TileMovement",
+							"parameters": {
+								"direction": "down",
+								"distance": "1"
+							}
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 763916489999268,
+							"parameters": {
+								"key": 40
+							}
+						},
+						{
+							"id": "is-playing",
+							"objectClass": "Player",
+							"sid": 436921581859302,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\""
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "tween-one-property",
+							"objectClass": "Player",
+							"sid": 732948466197655,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\"",
+								"property": "offsetY",
+								"end-value": "Self.Y + TILE_SIZE",
+								"time": "PLAYER_SPEED",
+								"ease": "noease",
+								"destroy-on-complete": "no",
+								"loop": "no",
+								"ping-pong": "no",
+								"repeat-count": "1"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 210009650858622,
+							"parameters": {
+								"animation": "\"Down\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 874095125087005
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 172515145588277,
+							"parameters": {
+								"key": 90
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 976343512834024,
+							"parameters": {
+								"animation": "\"AttackRight\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 603445971846239
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 318259227209681,
+							"parameters": {
+								"key": 88
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 673211807562200,
+							"parameters": {
+								"animation": "\"AttackLeft\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 667298766841489
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-playing",
+							"objectClass": "Player",
+							"sid": 357257531738378,
+							"behaviorType": "Tween",
+							"parameters": {
+								"tags": "\"MovePlayer\""
+							},
+							"isInverted": true
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 658973597048278,
+							"parameters": {
+								"key": 40
+							},
+							"isInverted": true
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 630919109921545,
+							"parameters": {
+								"key": 38
+							},
+							"isInverted": true
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 142161772882481,
+							"parameters": {
+								"key": 37
+							},
+							"isInverted": true
+						},
+						{
+							"id": "key-is-down",
+							"objectClass": "Keyboard",
+							"sid": 211889283012883,
+							"parameters": {
+								"key": 39
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "set-animation",
+							"objectClass": "PlayerSprite",
+							"sid": 224606286693488,
+							"parameters": {
+								"animation": "\"Idle\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 649763167632041
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-eventvar",
+							"objectClass": "System",
+							"sid": 207008595402238,
+							"parameters": {
+								"variable": "playerHP",
+								"comparison": 3,
+								"value": "0"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "restart-layout",
+							"objectClass": "System",
+							"sid": 815109225736286
+						},
+						{
+							"id": "reset-global-variables",
+							"objectClass": "System",
+							"sid": 373165958409929,
+							"parameters": {
+								"reset-static": false
+							}
+						}
+					],
+					"sid": 760048206998241
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-collision-with-another-object",
+							"objectClass": "PlayerSprite",
+							"sid": 916862470199835,
+							"parameters": {
+								"object": "Enemy"
+							}
+						},
+						{
+							"id": "is-animation-playing",
+							"objectClass": "PlayerSprite",
+							"sid": 592198137017339,
+							"parameters": {
+								"animation": "\"AttackRight\""
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "destroy",
+							"objectClass": "Enemy",
+							"sid": 483199792736549
+						}
+					],
+					"sid": 568352041957634
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-collision-with-another-object",
+							"objectClass": "PlayerSprite",
+							"sid": 622503542547191,
+							"parameters": {
+								"object": "Enemy"
+							}
+						},
+						{
+							"id": "is-animation-playing",
+							"objectClass": "PlayerSprite",
+							"sid": 510655534686776,
+							"parameters": {
+								"animation": "\"AttackLeft\""
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "destroy",
+							"objectClass": "Enemy",
+							"sid": 194274451132620
+						}
+					],
+					"sid": 634083019180417
+				}
+			],
+			"sid": 276611140213735
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Enemy",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "variable",
+					"name": "isSearchingPlayer",
+					"type": "boolean",
+					"initialValue": "false",
+					"comment": "",
+					"isStatic": false,
+					"isConstant": false,
+					"sid": 721633830532800
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-start-of-layout",
+							"objectClass": "System",
+							"sid": 618308336623488
+						}
+					],
+					"actions": [
+						{
+							"id": "pin-to-object-properties",
+							"objectClass": "DetectionZone",
+							"sid": 991025095977332,
+							"behaviorType": "EnemyPin",
+							"parameters": {
+								"pin-to": "Enemy",
+								"x": true,
+								"y": true,
+								"angle": true,
+								"width-type": "no",
+								"height-type": "no",
+								"z": false
+							}
+						}
+					],
+					"sid": 377314196672961
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-overlapping-another-object",
+							"objectClass": "PlayerSprite",
+							"sid": 973734857929855,
+							"parameters": {
+								"object": "DetectionZone"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "find-path",
+							"objectClass": "Enemy",
+							"sid": 932741556529426,
+							"behaviorType": "ExploradorDeRotas",
+							"parameters": {
+								"x": "Player.X",
+								"y": "Player.Y"
+							}
+						}
+					],
+					"sid": 109543160316482
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-path-found",
+							"objectClass": "Enemy",
+							"sid": 567003553720945,
+							"behaviorType": "ExploradorDeRotas"
+						}
+					],
+					"actions": [
+						{
+							"id": "move-along-path",
+							"objectClass": "Enemy",
+							"sid": 644172204715626,
+							"behaviorType": "ExploradorDeRotas"
+						}
+					],
+					"sid": 454079881751140
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-failed-to-find-path",
+							"objectClass": "Enemy",
+							"sid": 519662910332409,
+							"behaviorType": "ExploradorDeRotas"
+						}
+					],
+					"actions": [
+						{
+							"id": "find-path",
+							"objectClass": "Enemy",
+							"sid": 541728122342384,
+							"behaviorType": "ExploradorDeRotas",
+							"parameters": {
+								"x": "Player.X + random(-150, 150)",
+								"y": "Player.Y + random(-150, 150)"
+							}
+						}
+					],
+					"sid": 961604780283627
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-collision-with-another-object",
+							"objectClass": "Enemy",
+							"sid": 495683758422792,
+							"parameters": {
+								"object": "PlayerSprite"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "subtract-from-eventvar",
+							"objectClass": "System",
+							"sid": 722940649569252,
+							"parameters": {
+								"variable": "playerHP",
+								"value": "40"
+							}
+						}
+					],
+					"sid": 247813981095019
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-destroyed",
+							"objectClass": "Enemy",
+							"sid": 418857659349841
+						}
+					],
+					"actions": [
+						{
+							"id": "add-to-eventvar",
+							"objectClass": "System",
+							"sid": 307771421320608,
+							"parameters": {
+								"variable": "playerHP",
+								"value": "20"
+							}
+						},
+						{
+							"id": "subtract-from-eventvar",
+							"objectClass": "System",
+							"sid": 986563012654943,
+							"parameters": {
+								"variable": "enemyCount",
+								"value": "1"
+							}
+						}
+					],
+					"sid": 614234870125263
+				}
+			],
+			"sid": 835525910142857
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "compare-eventvar",
+					"objectClass": "System",
+					"sid": 364574579936497,
+					"parameters": {
+						"variable": "enemyCount",
+						"comparison": 0,
+						"value": "0"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 798397668909515
+				},
+				{
+					"id": "reset-global-variables",
+					"objectClass": "System",
+					"sid": 936456094173846,
+					"parameters": {
+						"reset-static": false
+					}
+				}
+			],
+			"sid": 767307802548638
+		}
+	],
+	"sid": 889650607052274
+}
